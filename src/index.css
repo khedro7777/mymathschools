@@ -1,0 +1,267 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* My Math Educational Platform Design System - RTL Support */
+
+@layer base {
+  :root {
+    /* Core Educational Colors */
+    --background: 248 250 252;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    /* Primary - Deep Math Blue for Trust & Learning */
+    --primary: 220 95% 45%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 220 95% 35%;
+
+    /* Secondary - Warm Blue for Balance */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 215 25% 15%;
+
+    /* Educational Accent - Math Orange */
+    --educational: 25 95% 53%;
+    --educational-foreground: 0 0% 98%;
+    --educational-light: 25 95% 60%;
+
+    /* Success - Educational Green */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    --success-light: 142 76% 45%;
+
+    /* Warning - Academic Gold */
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 98%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 215 25% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 220 95% 45%;
+
+    --radius: 0.75rem;
+
+    /* Educational Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-hover)) 100%);
+    --gradient-educational: linear-gradient(135deg, hsl(var(--educational)) 0%, hsl(var(--educational-light)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--educational)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(210 40% 98%) 100%);
+
+    /* Educational Shadows */
+    --shadow-soft: 0 1px 3px 0 hsl(var(--primary) / 0.1), 0 1px 2px 0 hsl(var(--primary) / 0.06);
+    --shadow-medium: 0 4px 6px -1px hsl(var(--primary) / 0.1), 0 2px 4px -1px hsl(var(--primary) / 0.06);
+    --shadow-large: 0 10px 15px -3px hsl(var(--primary) / 0.1), 0 4px 6px -2px hsl(var(--primary) / 0.05);
+    --shadow-educational: 0 8px 25px -8px hsl(var(--educational) / 0.3);
+
+    /* Smooth Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 28% 8%;
+    --foreground: 210 40% 98%;
+    --card: 215 28% 10%;
+    --card-foreground: 210 40% 98%;
+    --popover: 215 28% 10%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 220 95% 50%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 220 95% 55%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --educational: 25 95% 58%;
+    --educational-foreground: 0 0% 98%;
+    --educational-light: 25 95% 65%;
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 98%;
+    --success-light: 142 76% 50%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 215 28% 18%;
+    --input: 215 28% 18%;
+    --ring: 220 95% 50%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--educational)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(215 28% 12%) 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    direction: rtl;
+  }
+
+  body {
+    @apply bg-background text-foreground font-normal;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  .rtl {
+    direction: rtl;
+  }
+  
+  .ltr {
+    direction: ltr;
+  }
+}
+
+@layer components {
+  .btn-educational {
+    @apply bg-educational hover:bg-educational-light text-educational-foreground;
+    background: var(--gradient-educational);
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-educational);
+  }
+  
+  .btn-hero {
+    @apply text-primary-foreground font-semibold;
+    background: var(--gradient-hero);
+    transition: var(--transition-bounce);
+    box-shadow: var(--shadow-large);
+  }
+  
+  .btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-large), var(--shadow-educational);
+  }
+  
+  .card-educational {
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    border: 1px solid hsl(var(--border));
+  }
+  
+  .card-educational:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+  }
+  
+  .text-arabic {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    line-height: 1.8;
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out forwards;
+  }
+
+  .ai-chat-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 50;
+  }
+
+  .ai-chat-button {
+    background: var(--gradient-educational);
+    box-shadow: var(--shadow-large);
+    transition: var(--transition-bounce);
+  }
+
+  .ai-chat-button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-large), var(--shadow-educational);
+  }
+
+  .ai-chat-box {
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-large);
+    border: 1px solid hsl(var(--border));
+  }
+}
+
+@layer utilities {
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .rtl .ml-auto {
+    margin-left: 0;
+    margin-right: auto;
+  }
+  
+  .rtl .mr-auto {
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  /* Mobile responsive utilities */
+  @media (max-width: 640px) {
+    .mobile-full-width {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+    }
+    
+    .mobile-padding {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+}
