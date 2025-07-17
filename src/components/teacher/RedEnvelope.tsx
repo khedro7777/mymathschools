@@ -15,7 +15,6 @@ import {
   Percent,
   Star,
   Package,
-  Eye,
   Trash2
 } from 'lucide-react';
 import {
@@ -32,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { useToast } from '../ui/use-toast';
 
 interface Envelope {
   id: string;
@@ -48,8 +48,7 @@ interface Envelope {
   imageUrl: string;
 }
 
-const RedEnvelope = () => {
-  const [envelopes, setEnvelopes] = useState<Envelope[]>([
+const initialEnvelopes: Envelope[] = [
     {
       id: '1',
       type: 'discount',
@@ -58,11 +57,11 @@ const RedEnvelope = () => {
       value: '20%',
       quantity: 50,
       usedCount: 12,
-      expiryDate: '2024-02-15',
+      expiryDate: '2024-12-15',
       code: 'DISC20-2024',
       status: 'active',
       createdAt: '2024-01-15',
-      imageUrl: '/envelopes/discount-20.jpg'
+      imageUrl: '/placeholder.svg'
     },
     {
       id: '2',
@@ -72,11 +71,11 @@ const RedEnvelope = () => {
       value: '100',
       quantity: 30,
       usedCount: 8,
-      expiryDate: '2024-02-28',
+      expiryDate: '2024-12-28',
       code: 'POINTS100-2024',
       status: 'active',
       createdAt: '2024-01-10',
-      imageUrl: '/envelopes/points-100.jpg'
+      imageUrl: '/placeholder.svg'
     },
     {
       id: '3',
@@ -90,7 +89,7 @@ const RedEnvelope = () => {
       code: 'FREEBOOK-2024',
       status: 'used_up',
       createdAt: '2024-01-05',
-      imageUrl: '/envelopes/free-book.jpg'
+      imageUrl: '/placeholder.svg'
     },
     {
       id: '4',
@@ -100,27 +99,44 @@ const RedEnvelope = () => {
       value: '15%',
       quantity: 25,
       usedCount: 5,
-      expiryDate: '2024-01-25',
+      expiryDate: '2023-12-25',
       code: 'EXTRA15-2024',
       status: 'expired',
-      createdAt: '2024-01-01',
-      imageUrl: '/envelopes/extra-discount.jpg'
+      createdAt: '2023-12-01',
+      imageUrl: '/placeholder.svg'
     }
-  ]);
+];
 
+const emptyFormData = {
+  type: '' as 'discount' | 'points' | 'gift' | '',
+  title: '',
+  description: '',
+  value: '',
+  quantity: '',
+  expiryDate: ''
+};
+
+const RedEnvelope = () => {
+  const { toast } = useToast();
+  const [envelopes, setEnvelopes] = useState<Envelope[]>(initialEnvelopes);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    type: '',
-    title: '',
-    description: '',
-    value: '',
-    quantity: '',
-    expiryDate: ''
-  });
+  const [formData, setFormData] = useState(emptyFormData);
 
-  const handleCreateEnvelope = () => {
+  const handleCreateEnvelope = async () => {
+    // Basic Validation
+    if (!formData.type || !formData.title || !formData.value || !formData.quantity || !formData.expiryDate) {
+      toast({
+        title: "خطأ",
+        description: "يرجى ملء جميع الحقول المطلوبة.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     const newEnvelope: Envelope = {
-      id: Date.now().toString(),
+      id: `ENV${Date.now()}`,
       type: formData.type as 'discount' | 'points' | 'gift',
       title: formData.title,
       description: formData.description,
@@ -131,50 +147,59 @@ const RedEnvelope = () => {
       code: generateCode(formData.type),
       status: 'active',
       createdAt: new Date().toISOString().split('T')[0],
-      imageUrl: `/envelopes/${formData.type}-${Date.now()}.jpg`
+      imageUrl: `/placeholder.svg` // Using placeholder
     };
 
     setEnvelopes([newEnvelope, ...envelopes]);
     resetForm();
     setIsCreateDialogOpen(false);
     
-    // Mock image generation
-    alert(`تم إنشاء الظرف بنجاح!\nالكود: ${newEnvelope.code}\nسيتم توليد صورة JPG للظرف تلقائياً.`);
+    toast({
+      title: "تم الإنشاء بنجاح",
+      description: `تم إنشاء الظرف "${newEnvelope.title}" بنجاح.`,
+      className: "bg-green-500 text-white",
+    });
   };
 
   const generateCode = (type: string) => {
     const prefix = type === 'discount' ? 'DISC' : 
                   type === 'points' ? 'PTS' : 'GIFT';
     const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-    return `${prefix}${random}-2024`;
+    return `${prefix}${random}`;
   };
 
   const resetForm = () => {
-    setFormData({
-      type: '',
-      title: '',
-      description: '',
-      value: '',
-      quantity: '',
-      expiryDate: ''
-    });
+    setFormData(emptyFormData);
   };
 
   const handleCopyCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    alert(`تم نسخ الكود: ${code}`);
+    toast({
+      title: "تم النسخ",
+      description: `تم نسخ الكود ${code} إلى الحافظة.`,
+    });
   };
 
   const handleDownloadImage = (envelope: Envelope) => {
-    // Mock download
-    alert(`تم تحميل صورة الظرف: ${envelope.title}`);
+    toast({
+      title: "جاري التحميل...",
+      description: `يتم الآن تحميل صورة الظرف "${envelope.title}".`,
+    });
   };
 
-  const handleDeleteEnvelope = (envelopeId: string) => {
-    setEnvelopes(envelopes.filter(env => env.id !== envelopeId));
+  const handleDeleteEnvelope = async (envelopeId: string) => {
+    if (window.confirm('هل أنت متأكد من حذف هذا الظرف؟')) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setEnvelopes(envelopes.filter(env => env.id !== envelopeId));
+      toast({
+        title: "تم الحذف",
+        description: "تم حذف الظرف بنجاح.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type: 'discount' | 'points' | 'gift') => {
     switch (type) {
       case 'discount': return <Percent className="h-4 w-4" />;
       case 'points': return <Star className="h-4 w-4" />;
