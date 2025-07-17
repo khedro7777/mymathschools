@@ -3,52 +3,46 @@ import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { 
   Home, 
-  User, 
+  BookOpen, 
   Users, 
-  Video, 
-  FileText, 
-  MessageSquare, 
-  BarChart3, 
-  CreditCard,
-  UserPlus,
-  Calendar,
+  Gift, 
+  CreditCard, 
+  Star, 
+  ShoppingBag, 
+  User,
+  FileText,
+  Bell,
   Settings,
-  BookOpen,
-  Brain,
   Award
 } from 'lucide-react';
 
 interface NavigationItem {
   icon: React.ComponentType<any>;
   label: string;
-  href: string;
+  id: string;
   badge?: number;
 }
 
 const navigationItems: NavigationItem[] = [
-  { icon: Home, label: 'الرئيسية', href: '/teacher' },
-  { icon: User, label: 'ملفي الشخصي', href: '/teacher/profile' },
-  { icon: Users, label: 'إدارة المجموعات الدراسية', href: '/teacher/groups' },
-  { icon: Video, label: 'المحاضرات المسجلة', href: '/teacher/lectures' },
-  { icon: Calendar, label: 'جدول الحصص المباشرة', href: '/teacher/schedule' },
-  { icon: Brain, label: 'الاختبارات الذكية (AI)', href: '/teacher/ai-tests', badge: 2 },
-  { icon: UserPlus, label: 'دعوة الطلاب', href: '/teacher/invitations' },
-  { icon: MessageSquare, label: 'استفسارات الطلاب', href: '/teacher/tickets', badge: 5 },
-  { icon: BarChart3, label: 'تقارير الأداء', href: '/teacher/reports' },
-  { icon: CreditCard, label: 'الأرباح والمدفوعات', href: '/teacher/earnings' },
-  { icon: Settings, label: 'الحسابات الفرعية', href: '/teacher/sub-accounts' },
+  { icon: Home, label: '🏠 الرئيسية', id: 'home' },
+  { icon: BookOpen, label: '🎓 إدارة الكورسات', id: 'courses' },
+  { icon: Users, label: '👨‍👧 مجموعات طلابي', id: 'students' },
+  { icon: Gift, label: '🎁 الظرف الأحمر', id: 'envelope' },
+  { icon: CreditCard, label: '💰 مدفوعات الطلبة', id: 'payments', badge: 3 },
+  { icon: Star, label: '⭐ التقييمات', id: 'reviews' },
+  { icon: ShoppingBag, label: '🛍️ المتجر', id: 'store' },
+  { icon: User, label: '📄 إعداد البروفايل', id: 'profile' },
+  { icon: FileText, label: '📒 تحضير الدروس', id: 'lessons' },
+  { icon: Bell, label: '🔔 الإشعارات', id: 'notifications', badge: 5 },
+  { icon: Settings, label: '⚙️ إعدادات الحساب', id: 'settings' },
 ];
 
 interface TeacherNavigationProps {
-  currentPath?: string;
-  onNavigate?: (page: string) => void;
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
 }
 
-const TeacherNavigation = ({ currentPath = '/teacher', onNavigate }: TeacherNavigationProps) => {
-  const getPageFromPath = (href: string) => {
-    if (href === '/teacher') return 'dashboard';
-    return href.split('/').pop() || 'dashboard';
-  };
+const TeacherNavigation = ({ activeTab = 'home', setActiveTab }: TeacherNavigationProps) => {
   return (
     <nav className="space-y-2">
       <div className="mb-6">
@@ -76,33 +70,28 @@ const TeacherNavigation = ({ currentPath = '/teacher', onNavigate }: TeacherNavi
 
       {navigationItems.map((item) => {
         const Icon = item.icon;
-        const isActive = currentPath === item.href;
+        const isActive = activeTab === item.id;
         
         return (
           <Button
-            key={item.href}
+            key={item.id}
             variant={isActive ? "educational" : "ghost"}
             className={cn(
               "w-full justify-start text-right h-12 px-4",
               isActive && "shadow-md"
             )}
-            asChild
+            onClick={() => setActiveTab?.(item.id)}
           >
-            <div 
-              onClick={() => onNavigate?.(getPageFromPath(item.href))}
-              className="cursor-pointer"
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-3">
-                  <Icon className="h-5 w-5" />
-                  <span className="text-sm">{item.label}</span>
-                </div>
-                {item.badge && (
-                  <span className="bg-educational text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {item.badge}
-                  </span>
-                )}
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-3">
+                <Icon className="h-5 w-5" />
+                <span className="text-sm">{item.label}</span>
               </div>
+              {item.badge && (
+                <span className="bg-educational text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {item.badge}
+                </span>
+              )}
             </div>
           </Button>
         );
