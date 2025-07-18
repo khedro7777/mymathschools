@@ -8,6 +8,13 @@ import TeacherHome from '../components/teacher/TeacherHome';
 import CoursesManagement from '../components/teacher/CoursesManagement';
 import StudentGroups from '../components/teacher/StudentGroups';
 import RedEnvelope from '../components/teacher/RedEnvelope';
+import StudentPayments from '../components/teacher/StudentPayments';
+import Reviews from '../components/teacher/Reviews';
+import TeacherStore from '../components/teacher/TeacherStore';
+import ProfileSetup from '../components/teacher/ProfileSetup';
+import LessonPreparation from '../components/teacher/LessonPreparation';
+import TeacherNotifications from '../components/teacher/TeacherNotifications';
+import AccountSettings from '../components/teacher/AccountSettings';
 
 // Import UI components
 import { Card } from '../components/ui/card';
@@ -50,19 +57,19 @@ const TeacherDashboard = () => {
       case 'envelope':
         return <RedEnvelope />;
       case 'payments':
-        return <StudentPaymentsPage />;
+        return <StudentPayments />;
       case 'reviews':
-        return <ReviewsPage />;
+        return <Reviews />;
       case 'store':
-        return <TeacherStorePage />;
+        return <TeacherStore />;
       case 'profile':
-        return <ProfileSetupPage />;
+        return <ProfileSetup />;
       case 'lessons':
-        return <LessonPreparationPage />;
+        return <LessonPreparation />;
       case 'notifications':
-        return <NotificationsPage />;
+        return <TeacherNotifications />;
       case 'settings':
-        return <AccountSettingsPage />;
+        return <AccountSettings />;
       default:
         return <TeacherHome />;
     }
@@ -123,70 +130,6 @@ const TeacherDashboard = () => {
     </div>
   );
 };
-
-// Placeholder components for remaining tabs
-const StudentPaymentsPage = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-bold">مدفوعات الطلبة</h1>
-    <Card className="p-6">
-      <p className="text-muted-foreground">صفحة مدفوعات الطلبة - قيد التطوير</p>
-    </Card>
-  </div>
-);
-
-const ReviewsPage = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-bold">التقييمات</h1>
-    <Card className="p-6">
-      <p className="text-muted-foreground">صفحة التقييمات - قيد التطوير</p>
-    </Card>
-  </div>
-);
-
-const TeacherStorePage = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-bold">المتجر</h1>
-    <Card className="p-6">
-      <p className="text-muted-foreground">صفحة المتجر - قيد التطوير</p>
-    </Card>
-  </div>
-);
-
-const ProfileSetupPage = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-bold">إعداد البروفايل</h1>
-    <Card className="p-6">
-      <p className="text-muted-foreground">صفحة إعداد البروفايل - قيد التطوير</p>
-    </Card>
-  </div>
-);
-
-const LessonPreparationPage = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-bold">تحضير الدروس</h1>
-    <Card className="p-6">
-      <p className="text-muted-foreground">صفحة تحضير الدروس - قيد التطوير</p>
-    </Card>
-  </div>
-);
-
-const NotificationsPage = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-bold">الإشعارات</h1>
-    <Card className="p-6">
-      <p className="text-muted-foreground">صفحة الإشعارات - قيد التطوير</p>
-    </Card>
-  </div>
-);
-
-const AccountSettingsPage = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-bold">إعدادات الحساب</h1>
-    <Card className="p-6">
-      <p className="text-muted-foreground">صفحة إعدادات الحساب - قيد التطوير</p>
-    </Card>
-  </div>
-);
 
 export default TeacherDashboard;
 
