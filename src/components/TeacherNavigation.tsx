@@ -26,7 +26,7 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   { icon: Home, label: '🏠 الرئيسية', id: 'home' },
   { icon: BookOpen, label: '🎓 إدارة الكورسات', id: 'courses' },
-  { icon: Users, label: '👨‍👧 مجموعات طلابي', id: 'students' },
+  { icon: Users, label: '👨‍👧 مجموعات طلابي', id: 'student-groups' },
   { icon: Gift, label: '🎁 الظرف الأحمر', id: 'envelope' },
   { icon: CreditCard, label: '💰 مدفوعات الطلبة', id: 'payments', badge: 3 },
   { icon: Star, label: '⭐ التقييمات', id: 'reviews' },
