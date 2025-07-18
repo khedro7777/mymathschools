@@ -33,64 +33,56 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  if (!isMobile) {
+  if (isMobile) {
     return (
-      <aside className={cn("w-64 bg-card border-l border-border h-[calc(100vh-4rem)] overflow-y-auto", className)}>
-        <div className="p-4">
-          {children}
+      <>
+        <div className="fixed top-16 right-0 p-4 z-50">
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className={cn(
+                  "bg-card border-border shadow-lg hover:bg-muted",
+                  triggerClassName
+                )}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side={side}
+              className={cn(
+                "w-72 p-0 bg-card border-border",
+                contentClassName
+              )}
+            >
+              <div className="flex items-center justify-between p-4 border-b border-border">
+                <h3 className="text-lg font-semibold">القائمة</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+              <div className="p-4 overflow-y-auto h-[calc(100vh-4rem)]">
+                {children}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-      </aside>
+      </>
     );
   }
 
   return (
-    <>
-      {/* Mobile Trigger Button */}
-      <div className="md:hidden fixed top-20 right-4 z-50">
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className={cn(
-                "bg-card border-border shadow-lg hover:bg-muted",
-                triggerClassName
-              )}
-            >
-              <Menu className="h-4 w-4" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent 
-            side={side} 
-            className={cn(
-              "w-80 p-0 bg-card border-border",
-              contentClassName
-            )}
-          >
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <h3 className="text-lg font-semibold">القائمة</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsOpen(false)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="p-4 overflow-y-auto h-[calc(100vh-80px)]">
-              {children}
-            </div>
-          </SheetContent>
-        </Sheet>
+    <aside className={cn("w-72 bg-card border-l border-border h-screen-minus-header overflow-y-auto", className)}>
+      <div className="p-4">
+        {children}
       </div>
-
-      {/* Desktop Sidebar - Hidden on Mobile */}
-      <aside className="hidden md:block w-64 bg-card border-l border-border h-[calc(100vh-4rem)] overflow-y-auto">
-        <div className="p-4">
-          {children}
-        </div>
-      </aside>
-    </>
+    </aside>
   );
 };
 
