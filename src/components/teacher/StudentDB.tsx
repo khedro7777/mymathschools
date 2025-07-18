@@ -59,9 +59,29 @@ const StudentDB = () => {
     );
   });
 
-  const handleSendMessage = (studentId: string) => alert(`Sending message to student ${studentId}`);
-  const handleUpdateGrades = (studentId: string) => alert(`Updating grades for student ${studentId}`);
-  const handleAddNote = (studentId: string) => alert(`Adding note to student ${studentId}`);
+  const handleSendMessage = (studentId: string) => {
+    const message = prompt(`Message to student ${studentId}`);
+    if (message) {
+      alert(`Message sent: ${message}`);
+    }
+  };
+
+  const handleUpdateGrades = (studentId: string) => {
+    const subject = prompt(`Subject for student ${studentId}`);
+    const score = prompt(`Score for student ${studentId}`);
+    if (subject && score) {
+      setStudents(students.map(s => s.id === studentId ? { ...s, grades: [...s.grades, { subject, score: parseInt(score) }] } : s));
+      alert(`Grades updated for student ${studentId}`);
+    }
+  };
+
+  const handleAddNote = (studentId: string) => {
+    const note = prompt(`Note for student ${studentId}`);
+    if (note) {
+      setStudents(students.map(s => s.id === studentId ? { ...s, notes: [...s.notes, note] } : s));
+      alert(`Note added for student ${studentId}`);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -111,7 +131,7 @@ const StudentDB = () => {
                     <td className="p-3">{student.name}</td>
                     <td className="p-3">{student.course}</td>
                     <td className="p-3">{student.grade}</td>
-                    <td className="p-3"><Badge variant={student.paymentStatus === 'paid' ? 'success' : 'destructive'}>{student.paymentStatus}</Badge></td>
+                    <td className="p-3"><Badge variant={student.paymentStatus === 'paid' ? 'default' : student.paymentStatus === 'pending' ? 'secondary' : 'destructive'}>{student.paymentStatus}</Badge></td>
                     <td className="p-3">
                       <div className="flex gap-2">
                         <Button variant="ghost" size="sm" onClick={() => setSelectedStudent(student)}><Eye className="h-4 w-4" /></Button>
