@@ -47,6 +47,8 @@ const TeacherDashboard = () => {
         return <CoursesManagement />;
       case 'students':
         return <StudentGroups />;
+      case 'student-groups':
+        return <StudentGroups />;
       case 'envelope':
         return <RedEnvelope />;
       case 'payments':
