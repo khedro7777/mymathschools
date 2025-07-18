@@ -14,6 +14,13 @@ import {
   HelpCircle,
   Lightbulb
 } from 'lucide-react';
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  baseURL: "https://openrouter.ai/api/v1",
+  dangerouslyAllowBrowser: true,
+});
 
 interface AIAssistantProps {
   position?: 'fixed' | 'inline';
@@ -25,11 +32,11 @@ const AIAssistant = ({ position = 'fixed', context = 'main' }: AIAssistantProps)
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
     {
-      type: 'ai',
+      role: 'assistant',
       content: 'مرحباً! أنا مساعدك الذكي في My Math. كيف يمكنني مساعدتك اليوم؟',
-      timestamp: new Date()
     }
   ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const contextHelpers = {
     student: [
@@ -54,24 +61,26 @@ const AIAssistant = ({ position = 'fixed', context = 'main' }: AIAssistantProps)
     ]
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (message.trim()) {
-      setMessages(prev => [...prev, {
-        type: 'user',
-        content: message,
-        timestamp: new Date()
-      }]);
-      
-      // Simulate AI response
-      setTimeout(() => {
-        setMessages(prev => [...prev, {
-          type: 'ai',
-          content: `شكراً لك! سأساعدك في "${message}". هذه خدمة تجريبية للمساعد الذكي.`,
-          timestamp: new Date()
-        }]);
-      }, 1000);
-      
+      const newMessages = [...messages, { role: 'user', content: message }];
+      setMessages(newMessages);
       setMessage('');
+      setIsLoading(true);
+
+      try {
+        const completion = await openai.chat.completions.create({
+          model: "openai/gpt-3.5-turbo",
+          messages: newMessages,
+        });
+        const aiResponse = completion.choices[0].message.content;
+        setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+      } catch (error) {
+        console.error("Error fetching AI response:", error);
+        setMessages(prev => [...prev, { role: 'assistant', content: "عذراً، حدث خطأ ما. يرجى المحاولة مرة أخرى." }]);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -125,11 +134,11 @@ const AIAssistant = ({ position = 'fixed', context = 'main' }: AIAssistantProps)
               {messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={`flex ${msg.type === 'user' ? 'justify-start' : 'justify-end'}`}
+                  className={`flex ${msg.role === 'user' ? 'justify-start' : 'justify-end'}`}
                 >
                   <div
                     className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                      msg.type === 'user'
+                      msg.role === 'user'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted'
                     }`}
@@ -138,6 +147,13 @@ const AIAssistant = ({ position = 'fixed', context = 'main' }: AIAssistantProps)
                   </div>
                 </div>
               ))}
+              {isLoading && (
+                <div className="flex justify-end">
+                  <div className="max-w-[80%] p-2 rounded-lg text-sm bg-muted">
+                    ...
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Quick Actions */}
@@ -171,12 +187,13 @@ const AIAssistant = ({ position = 'fixed', context = 'main' }: AIAssistantProps)
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder="اكتب رسالتك..."
                   className="flex-1 px-3 py-2 text-sm border border-input rounded-md bg-background"
+                  disabled={isLoading}
                 />
                 <Button
                   onClick={handleSendMessage}
                   size="icon"
                   className="h-9 w-9"
-                  disabled={!message.trim()}
+                  disabled={!message.trim() || isLoading}
                 >
                   <Send className="h-4 w-4" />
                 </Button>
@@ -209,8 +226,9 @@ const AIAssistant = ({ position = 'fixed', context = 'main' }: AIAssistantProps)
           onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
           placeholder="اكتب سؤالك هنا..."
           className="flex-1 px-3 py-2 text-sm border border-input rounded-md bg-background"
+          disabled={isLoading}
         />
-        <Button onClick={handleSendMessage} size="icon" disabled={!message.trim()}>
+        <Button onClick={handleSendMessage} size="icon" disabled={!message.trim() || isLoading}>
           <Send className="h-4 w-4" />
         </Button>
       </div>
