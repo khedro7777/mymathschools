@@ -9,6 +9,15 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    strictPort: true,
+    hmr: {
+      protocol: "ws",
+      host: "8080-i912rxdmsw1b475ishnbd-27e73dc8.manusvm.computer",
+      clientPort: 443,
+    },
+    watch: {
+      usePolling: true,
+    },
   },
   plugins: [
     react(),

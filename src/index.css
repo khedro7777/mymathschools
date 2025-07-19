@@ -265,3 +265,24 @@
     }
   }
 }
+
+
+.ai-chat-box {
+  width: 400px; /* Adjust as needed */
+  height: 600px; /* Adjust as needed */
+}
+
+.ai-chat-container {
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.ai-chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+
