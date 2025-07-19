@@ -14,13 +14,9 @@ import {
   HelpCircle,
   Lightbulb
 } from 'lucide-react';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const openai = new OpenAI({
-  apiKey: "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",
-  baseURL: "https://openrouter.ai/api/v1",
-  dangerouslyAllowBrowser: true,
-});
+const genAI = new GoogleGenerativeAI("AIzaSyBRXhHQGb36UPhTjspLanVuhXyqYzHa0oI");
 
 interface AIAssistantProps {
   position?: 'fixed' | 'inline';
@@ -69,11 +65,9 @@ const AIAssistant = ({ position = 'fixed', context = 'main' }: AIAssistantProps)
       setIsLoading(true);
 
       try {
-        const completion = await openai.chat.completions.create({
-          model: "openai/gpt-3.5-turbo",
-          messages: newMessages,
-        });
-        const aiResponse = completion.choices[0].message.content;
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const result = await model.generateContent(message);
+        const aiResponse = result.response.text();
         setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
       } catch (error) {
         console.error("Error fetching AI response:", error);
