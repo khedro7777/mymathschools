@@ -47,7 +47,12 @@ const AdminDashboard = () => {
       case 'content':
         return <div className="p-6"><h1 className="text-2xl font-bold">مراقبة المحتوى</h1></div>;
       case 'ai-oversight':
-        return <div className="p-6"><h1 className="text-2xl font-bold">إشراف AI</h1></div>;
+        return (
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-4">إشراف AI</h1>
+            <AIAssistant position="inline" context="admin" />
+          </div>
+        );
       case 'payments':
         return <div className="p-6"><h1 className="text-2xl font-bold">إدارة المدفوعات</h1></div>;
       case 'analytics':
