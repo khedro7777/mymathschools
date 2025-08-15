@@ -1,10 +1,28 @@
-
 import React, { useState } from 'react';
 import AdminNavigation from '../components/AdminNavigation';
 import StoreManagement from '../components/StoreManagement';
 import PreschoolSection from '../components/PreschoolSection';
 import AIAssistant from '../components/AIAssistant';
 import MobileSidebar from '../components/ui/mobile-sidebar';
+
+// Import teacher components for admin management
+import TeacherHome from '../components/teacher/TeacherHome';
+import CoursesManagement from '../components/teacher/CoursesManagement';
+import StudentGroups from '../components/teacher/StudentGroups';
+import RedEnvelope from '../components/teacher/RedEnvelope';
+import StudentPayments from '../components/teacher/StudentPayments';
+import Reviews from '../components/teacher/Reviews';
+import TeacherStore from '../components/teacher/TeacherStore';
+import ProfileSetup from '../components/teacher/ProfileSetup';
+import LessonPreparation from '../components/teacher/LessonPreparation';
+import TeacherNotifications from '../components/teacher/TeacherNotifications';
+import AccountSettings from '../components/teacher/AccountSettings';
+
+// Import new admin components
+import TeacherStudentManagement from '../components/admin/TeacherStudentManagement';
+import TeacherApproval from '../components/admin/TeacherApproval';
+import AddTeacherDirectly from '../components/admin/AddTeacherDirectly';
+
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -32,7 +50,8 @@ import {
   Calculator,
   ShoppingBag,
   Baby,
-  BookOpen
+  BookOpen,
+  Award
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -40,10 +59,113 @@ const AdminDashboard = () => {
 
   const renderContent = () => {
     switch (currentPage) {
+      // إدارة المدرسين والطلاب - المكونات الجديدة
+      case 'teacher-student-management':
+        return <TeacherStudentManagement />;
+      case 'teacher-approval':
+        return <TeacherApproval />;
+      case 'add-teacher-directly':
+        return <AddTeacherDirectly />;
+      
+      // إدارة المدرسين والطلاب
       case 'teachers':
         return <div className="p-6"><h1 className="text-2xl font-bold">إدارة المدرسين</h1></div>;
       case 'students':
         return <div className="p-6"><h1 className="text-2xl font-bold">إدارة الطلاب</h1></div>;
+      
+      // وظائف المدرسين المنقولة للإدارة
+      case 'courses-management':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة كورسات المدرسين</h2>
+              <p className="text-sm text-muted-foreground">يمكن للإدارة الآن مراقبة وإدارة جميع كورسات المدرسين</p>
+            </div>
+            <CoursesManagement />
+          </div>
+        );
+      case 'student-groups':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة مجموعات الطلاب</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة جميع مجموعات الطلاب عبر المنصة</p>
+            </div>
+            <StudentGroups />
+          </div>
+        );
+      case 'red-envelope':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة الظرف الأحمر</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة نظام الظرف الأحمر للمدرسين</p>
+            </div>
+            <RedEnvelope />
+          </div>
+        );
+      case 'student-payments':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة مدفوعات الطلبة</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة جميع مدفوعات الطلبة للمدرسين</p>
+            </div>
+            <StudentPayments />
+          </div>
+        );
+      case 'teacher-reviews':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة تقييمات المدرسين</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة جميع تقييمات المدرسين</p>
+            </div>
+            <Reviews />
+          </div>
+        );
+      case 'teacher-profiles':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة بروفايلات المدرسين</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة بروفايلات جميع المدرسين</p>
+            </div>
+            <ProfileSetup />
+          </div>
+        );
+      case 'lesson-preparation':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة تحضير الدروس</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة تحضير دروس المدرسين</p>
+            </div>
+            <LessonPreparation />
+          </div>
+        );
+      case 'teacher-notifications':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة إشعارات المدرسين</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة إشعارات جميع المدرسين</p>
+            </div>
+            <TeacherNotifications />
+          </div>
+        );
+      case 'teacher-account-settings':
+        return (
+          <div className="p-6">
+            <div className="mb-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+              <h2 className="text-lg font-semibold text-primary mb-2">إدارة إعدادات حسابات المدرسين</h2>
+              <p className="text-sm text-muted-foreground">مراقبة وإدارة إعدادات حسابات جميع المدرسين</p>
+            </div>
+            <AccountSettings />
+          </div>
+        );
+
+      // الوظائف الأصلية للإدارة
       case 'content':
         return <div className="p-6"><h1 className="text-2xl font-bold">مراقبة المحتوى</h1></div>;
       case 'ai-oversight':
@@ -79,7 +201,7 @@ const AdminDashboard = () => {
             <div className="w-10 h-10 bg-gradient-to-r from-primary to-educational rounded-xl flex items-center justify-center">
               <Calculator className="h-6 w-6 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-primary">أكاديمية Mymath - لوحة الإدارة</h1>
+            <h1 className="text-xl font-bold text-primary">أكاديمية Mymath - لوحة الإدارة الشاملة</h1>
           </div>
           
           <div className="flex items-center gap-3">
@@ -132,7 +254,7 @@ const AdminDashboardHome = () => (
           <CheckCircle className="h-6 w-6 text-success" />
           <div>
             <p className="font-medium text-success">My Math يعمل بشكل مثالي</p>
-            <p className="text-sm text-muted-foreground">آخر فحص: منذ دقيقتين - جميع الخدمات متاحة</p>
+            <p className="text-sm text-muted-foreground">آخر فحص: منذ دقيقتين - جميع الخدمات متاحة (بما في ذلك نظام المدرسين)</p>
           </div>
           <Button variant="outline" size="sm" className="mr-auto">
             <Eye className="h-4 w-4 ml-2" />
@@ -189,14 +311,14 @@ const AdminDashboardHome = () => (
       <Card className="card-educational p-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-2xl font-bold text-warning">1,240</div>
-            <div className="text-sm text-muted-foreground">مبيعات المتجر</div>
+            <div className="text-2xl font-bold text-warning">245K</div>
+            <div className="text-sm text-muted-foreground">أرباح المدرسين (ج.م)</div>
             <div className="flex items-center gap-1 text-xs text-success">
               <ArrowUp className="h-3 w-3" />
-              +8% عن الأسبوع الماضي
+              +12% هذا الشهر
             </div>
           </div>
-          <ShoppingBag className="h-8 w-8 text-warning" />
+          <Award className="h-8 w-8 text-warning" />
         </div>
       </Card>
     </div>
@@ -232,12 +354,12 @@ const AdminDashboardHome = () => (
       <Card className="card-educational p-6 hover:scale-105 transition-transform cursor-pointer">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-gradient-to-r from-primary to-educational rounded-xl flex items-center justify-center">
-            <BookOpen className="h-8 w-8 text-white" />
+            <Award className="h-8 w-8 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-primary">الدورات والأنشطة</h3>
-            <p className="text-sm text-muted-foreground">125 دورة • 2,800 مشترك</p>
-            <Badge variant="outline" className="mt-2">محتوى تفاعلي</Badge>
+            <h3 className="text-lg font-semibold text-primary">إدارة المدرسين</h3>
+            <p className="text-sm text-muted-foreground">850 مدرس • 2,800 كورس</p>
+            <Badge variant="outline" className="mt-2">إدارة شاملة</Badge>
           </div>
         </div>
       </Card>
@@ -276,11 +398,24 @@ const AdminDashboardHome = () => (
         <div className="flex items-center justify-between p-4 border rounded-lg">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
-              <Brain className="h-5 w-5 text-primary" />
+              <Award className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <p className="font-medium">تحديث المساعد الذكي</p>
-              <p className="text-sm text-muted-foreground">تحسينات في دقة الإجابات</p>
+              <p className="font-medium">مدرس جديد أنشأ كورس</p>
+              <p className="text-sm text-muted-foreground">د. سارة أحمد - كورس الجبر المتقدم</p>
+            </div>
+          </div>
+          <span className="text-xs text-muted-foreground">منذ 30 دقيقة</span>
+        </div>
+
+        <div className="flex items-center justify-between p-4 border rounded-lg">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-warning/20 rounded-full flex items-center justify-center">
+              <DollarSign className="h-5 w-5 text-warning" />
+            </div>
+            <div>
+              <p className="font-medium">دفعة جديدة للمدرس</p>
+              <p className="text-sm text-muted-foreground">د. محمد علي - 1,250 ج.م</p>
             </div>
           </div>
           <span className="text-xs text-muted-foreground">منذ ساعة</span>
@@ -291,3 +426,4 @@ const AdminDashboardHome = () => (
 );
 
 export default AdminDashboard;
+

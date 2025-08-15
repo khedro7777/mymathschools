@@ -1,11 +1,13 @@
+
 import React, { useState } from 'react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { 
-  Calculator, 
-  Award, 
-  Shield, 
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import {
+  Calculator,
+  Award,
+  Shield,
   BookOpen,
   Users,
   Brain,
@@ -27,6 +29,8 @@ import AdminDashboard from './AdminDashboard';
 import InstallAppButton from '../components/InstallAppButton';
 import AIAssistant from '../components/AIAssistant';
 import AdvancedSearchEngine from '../components/AdvancedSearchEngine';
+import TeacherRegistration from '../components/TeacherRegistration';
+import { ModeToggle } from '../components/ui/mode-toggle'; // Import ModeToggle
 
 type UserType = 'guest' | 'student' | 'teacher' | 'admin';
 
@@ -99,6 +103,7 @@ const Index = () => {
           </div>
           
           <div className="flex items-center gap-2 sm:gap-3">
+            <ModeToggle /> {/* Add ModeToggle here */}
             <InstallAppButton />
             <Button variant="outline" size="sm" className="hidden sm:inline-flex">
               تسجيل الدخول
@@ -209,8 +214,7 @@ const Index = () => {
             </Card>
 
             {/* Teacher Demo */}
-            <Card className="card-educational p-6 sm:p-8 text-center hover:scale-105 transition-transform cursor-pointer"
-                  onClick={() => setCurrentView('teacher')}>
+            <Card className="card-educational p-6 sm:p-8 text-center hover:scale-105 transition-transform">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-educational to-primary rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                 <Award className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
               </div>
@@ -218,10 +222,27 @@ const Index = () => {
               <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">
                 أنشئ الدروس، استخدم AI، وأدر الطلاب بفعالية
               </p>
-              <Button variant="educational" className="w-full">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                انضم كمدرس
-              </Button>
+              <div className="space-y-2">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="educational" className="w-full">
+                      <UserPlus className="h-4 w-4 ml-2" />
+                      انضم كمدرس
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden p-0">
+                    <TeacherRegistration onClose={() => {}} />
+                  </DialogContent>
+                </Dialog>
+                <Button 
+                  variant="outline" 
+                  className="w-full" 
+                  onClick={() => setCurrentView('teacher')}
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  جرب لوحة المدرس
+                </Button>
+              </div>
             </Card>
 
             {/* Admin Demo */}
@@ -264,15 +285,21 @@ const Index = () => {
               <GraduationCap className="h-5 w-5 ml-2" />
               ابدأ كطالب
             </Button>
-            <Button 
-              size="xl" 
-              variant="outline" 
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              onClick={() => setCurrentView('teacher')}
-            >
-              <Award className="h-5 w-5 ml-2" />
-              انضم كمدرس
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                  size="xl" 
+                  variant="outline" 
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
+                  <Award className="h-5 w-5 ml-2" />
+                  انضم كمدرس
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden p-0">
+                <TeacherRegistration onClose={() => {}} />
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </section>
@@ -301,3 +328,5 @@ const Index = () => {
 };
 
 export default Index;
+
+
