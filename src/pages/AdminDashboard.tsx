@@ -22,6 +22,7 @@ import AccountSettings from '../components/teacher/AccountSettings';
 import TeacherStudentManagement from '../components/admin/TeacherStudentManagement';
 import TeacherApproval from '../components/admin/TeacherApproval';
 import AddTeacherDirectly from '../components/admin/AddTeacherDirectly';
+import PaymentApproval from '../components/admin/PaymentApproval';
 
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -66,6 +67,8 @@ const AdminDashboard = () => {
         return <TeacherApproval />;
       case 'add-teacher-directly':
         return <AddTeacherDirectly />;
+      case 'payment-approval':
+        return <PaymentApproval />;
       
       // إدارة المدرسين والطلاب
       case 'teachers':

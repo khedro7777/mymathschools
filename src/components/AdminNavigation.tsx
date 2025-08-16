@@ -43,6 +43,7 @@ const navigationItems: NavigationItem[] = [
   { icon: Users, label: 'إدارة المدرسين والطلاب', href: '/admin/teacher-student-management', badge: 'جديد', important: true },
   { icon: CheckCircle, label: 'موافقة طلبات المدرسين', href: '/admin/teacher-approval', badge: 3, important: true },
   { icon: UserPlus, label: 'إضافة مدرس مباشرة', href: '/admin/add-teacher-directly', badge: 'جديد' },
+  { icon: CreditCard, label: 'موافقة طلبات الدفع', href: '/admin/payment-approval', badge: 2, important: true },
   
   // إدارة المدرسين والطلاب
   { icon: UserCheck, label: 'مراجعة حسابات المدرسين', href: '/admin/teachers', badge: 8 },

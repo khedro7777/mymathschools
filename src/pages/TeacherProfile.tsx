@@ -123,6 +123,12 @@ const TeacherProfile = () => {
             onPaymentComplete={handlePaymentComplete}
             totalAmount={teacherData.monthlyPrice}
             itemName={`الاشتراك الشهري - ${teacherData.name}`}
+            teacherId={teacherData.id.toString()}
+            teacherName={teacherData.name}
+            courseId="course_1"
+            courseName={teacherData.title}
+            studentId="student_demo"
+            studentName="طالب تجريبي"
           />
         </div>
       </div>
