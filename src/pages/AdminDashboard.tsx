@@ -10,7 +10,7 @@ import TeacherHome from '../components/teacher/TeacherHome';
 import CoursesManagement from '../components/teacher/CoursesManagement';
 import StudentGroups from '../components/teacher/StudentGroups';
 import RedEnvelope from '../components/teacher/RedEnvelope';
-import StudentPayments from '../components/teacher/StudentPayments';
+
 import Reviews from '../components/teacher/Reviews';
 import TeacherStore from '../components/teacher/TeacherStore';
 import ProfileSetup from '../components/teacher/ProfileSetup';
@@ -114,7 +114,7 @@ const AdminDashboard = () => {
               <h2 className="text-lg font-semibold text-primary mb-2">إدارة مدفوعات الطلبة</h2>
               <p className="text-sm text-muted-foreground">مراقبة وإدارة جميع مدفوعات الطلبة للمدرسين</p>
             </div>
-            <StudentPayments />
+            <PaymentApproval />
           </div>
         );
       case 'teacher-reviews':

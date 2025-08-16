@@ -28,7 +28,6 @@ const navigationItems: NavigationItem[] = [
   { icon: BookOpen, label: '🎓 إدارة الكورسات', id: 'courses' },
   { icon: Users, label: '👨‍👧 مجموعات طلابي', id: 'student-groups' },
   { icon: Gift, label: '🎁 الظرف الأحمر', id: 'envelope' },
-  { icon: CreditCard, label: '💰 مدفوعات الطلبة', id: 'payments', badge: 3 },
   { icon: Star, label: '⭐ التقييمات', id: 'reviews' },
   { icon: ShoppingBag, label: '🛍️ المتجر', id: 'store' },
   { icon: User, label: '📄 إعداد البروفايل', id: 'profile' },

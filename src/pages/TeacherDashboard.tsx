@@ -8,7 +8,7 @@ import TeacherHome from '../components/teacher/TeacherHome';
 import CoursesManagement from '../components/teacher/CoursesManagement';
 import StudentGroups from '../components/teacher/StudentGroups';
 import RedEnvelope from '../components/teacher/RedEnvelope';
-import StudentPayments from '../components/teacher/StudentPayments';
+
 import Reviews from '../components/teacher/Reviews';
 import TeacherStore from '../components/teacher/TeacherStore';
 import ProfileSetup from '../components/teacher/ProfileSetup';
@@ -58,8 +58,6 @@ const TeacherDashboard = () => {
         return <StudentGroups />;
       case 'envelope':
         return <RedEnvelope />;
-      case 'payments':
-        return <StudentPayments />;
       case 'reviews':
         return <Reviews />;
       case 'store':
