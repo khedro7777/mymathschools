@@ -55,7 +55,7 @@ import {
 } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const [currentPage, setCurrentPage] = useState('dashboard');
+  const [currentPage, setCurrentPage] = useState("dashboard");
 
   const renderContent = () => {
     switch (currentPage) {
@@ -234,11 +234,6 @@ const AdminDashboard = () => {
         {/* Main Content */}
         <main className="flex-1 p-6 md:pr-6 pr-4">
           {renderContent()}
-          
-          {/* AI Assistant for Admin */}
-          <div className="mt-8">
-            <AIAssistant position="inline" context="admin" />
-          </div>
         </main>
       </div>
     </div>

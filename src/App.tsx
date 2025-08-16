@@ -10,6 +10,7 @@ import StudentLectures from "./pages/StudentLectures";
 import StudentDashboard from "./pages/StudentDashboard";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./components/theme-provider";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/teacher-profile/:id" element={<TeacherProfile />} />
             <Route path="/student/lectures" element={<StudentLectures />} />
             <Route path="/student/dashboard" element={<StudentDashboard />} />
+            <Route path="/admin/*" element={<AdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
