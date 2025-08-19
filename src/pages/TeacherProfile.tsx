@@ -26,6 +26,7 @@ const TeacherProfile = () => {
   const { id } = useParams();
   const [showPayment, setShowPayment] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
   
   // Dummy teacher data
   const teacherData = {
@@ -211,6 +212,14 @@ const TeacherProfile = () => {
                 onClick={handleSubscribeClick}
               >
                 اشترك بالحصة
+              </Button>
+              <Button 
+                variant={isFollowing ? "default" : "outline"} 
+                size="lg"
+                onClick={() => setIsFollowing(!isFollowing)}
+              >
+                <Users className="h-4 w-4 ml-2" />
+                {isFollowing ? "متابع" : "متابعة"}
               </Button>
               <Button variant="outline" size="lg">
                 <MessageSquare className="h-4 w-4 ml-2" />

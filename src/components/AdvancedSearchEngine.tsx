@@ -4,7 +4,7 @@ import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Badge } from './ui/badge';
-import { Search, Star, User } from 'lucide-react';
+import { Search, Star, User, Users } from 'lucide-react';
 
 const EDUCATION_STAGES = [
   'رياض الأطفال',
@@ -363,13 +363,26 @@ const AdvancedSearchEngine = () => {
                   <span className="text-sm text-muted-foreground mr-2">({teacher.rating})</span>
                 </div>
 
-                <Button 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => window.location.href = `/teacher-profile/${teacher.id}`}
-                >
-                  عرض الملف الشخصي
-                </Button>
+                <div className="space-y-2">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => window.location.href = `/teacher-profile/${teacher.id}`}
+                  >
+                    عرض الملف الشخصي
+                  </Button>
+                  <Button 
+                    variant="default" 
+                    className="w-full bg-gradient-to-r from-primary to-educational"
+                    onClick={() => {
+                      // إضافة منطق المتابعة هنا
+                      alert(`تم متابعة ${teacher.name} بنجاح!`);
+                    }}
+                  >
+                    <Users className="h-4 w-4 ml-2" />
+                    متابعة
+                  </Button>
+                </div>
               </Card>
             ))}
           </div>
