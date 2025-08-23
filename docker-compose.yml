@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # 🔹 Reverse Proxy + SSL
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./certs:/etc/letsencrypt
+      - ./dist:/usr/share/nginx/html
+    depends_on:
+      - strapi
+      - mcp
+    restart: unless-stopped
+
+  # 🔹 Strapi CMS
+  strapi:
+    image: strapi/strapi:latest
+    expose:
+      - "1337"
+    volumes:
+      - ./strapi-app:/srv/app
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi123
+      NODE_ENV: production
+      ADMIN_JWT_SECRET: myJwtSecret
+      JWT_SECRET: myJwtSecret
+      API_TOKEN_SALT: myApiTokenSalt
+      APP_KEYS: myAppKey1,myAppKey2,myAppKey3,myAppKey4
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # 🔹 Database (Postgres)
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi123
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # 🔹 MCP Service (AI)
+  mcp:
+    build:
+      context: ./mcp
+      dockerfile: Dockerfile
+    expose:
+      - "4000"
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+    restart: unless-stopped
+
+volumes:
+  db_data:
+

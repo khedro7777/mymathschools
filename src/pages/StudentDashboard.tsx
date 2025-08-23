@@ -30,6 +30,7 @@ import {
 import StudentCourses from '../components/student/StudentCourses';
 import StudentStore from '../components/student/StudentStore';
 import StudentWallet from '../components/student/StudentWallet';
+import StudentSchedules from '../components/student/StudentSchedules';
 
 interface DashboardCardProps {
   title: string;
@@ -57,6 +58,8 @@ const StudentDashboard = () => {
         return <StudentStore />;
       case 'wallet':
         return <StudentWallet />;
+      case 'schedules':
+        return <StudentSchedules />;
       case 'settings':
         return <div className="p-6"><h1 className="text-2xl font-bold">الإعدادات</h1></div>;
       default:

@@ -1,0 +1,24 @@
+{
+  "name": "mymath-mcp-service",
+  "version": "1.0.0",
+  "description": "MCP AI Service for MyMath Platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.0",
+    "openai": "^4.20.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["ai", "mcp", "education", "math"],
+  "author": "MyMath Team",
+  "license": "MIT"
+}
+

@@ -26,7 +26,7 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   { icon: Home, label: 'الرئيسية', href: '/student' },
   { icon: BookOpen, label: 'كورساتي', href: '/student/courses', badge: 3 },
-  { icon: Calendar, label: 'جدول الحصص', href: '/student/schedule' },
+  { icon: Calendar, label: 'جدول الحصص', href: '/student/schedules' },
   { icon: FileText, label: 'الاختبارات', href: '/student/exams', badge: 2 },
   { icon: Trophy, label: 'النتائج والدرجات', href: '/student/results' },
   { icon: MessageSquare, label: 'التذاكر والاستفسارات', href: '/student/tickets', badge: 1 },
