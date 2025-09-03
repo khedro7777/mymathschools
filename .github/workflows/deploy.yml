@@ -1,0 +1,68 @@
+name: Deploy to Hostinger VPS
+
+on:
+  push:
+    branches: [ production-ready ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        script: |
+          # Navigate to project directory
+          cd /var/www/mymath
+          
+          # Pull latest changes
+          git pull origin production-ready
+          
+          # Install dependencies and build
+          npm install
+          npm run build
+          
+          # Build and restart Strapi
+          cd strapi-app
+          npm install
+          cd ..
+          
+          # Restart Docker containers
+          docker-compose -f docker-compose.production.yml down
+          docker-compose -f docker-compose.production.yml up -d --build
+          
+          # Wait for services to start
+          sleep 30
+          
+          # Check status
+          docker-compose -f docker-compose.production.yml ps
+          
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ ${{ job.status }} == 'success' ]; then
+          echo "✅ Deployment successful!"
+        else
+          echo "❌ Deployment failed!"
+        fi
+
