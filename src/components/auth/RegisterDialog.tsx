@@ -238,8 +238,8 @@ const RegisterDialog: React.FC<RegisterDialogProps> = ({ isOpen, onClose, onRegi
               type="button"
               className="text-sm text-blue-600 hover:underline"
               onClick={() => {
+                onClose();
                 // يمكن إضافة منطق فتح نموذج تسجيل الدخول هنا
-                console.log('Open login dialog');
               }}
             >
               تسجيل الدخول

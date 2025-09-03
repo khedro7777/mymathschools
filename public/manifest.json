@@ -1,7 +1,7 @@
 {
-  "name": "منصة التعلم العربية",
-  "short_name": "منصة التعلم",
-  "description": "منصة تعليمية عربية متطورة تربط الطلاب بأفضل المدرسين مع دروس مباشرة واختبارات ذكية",
+  "name": "أكاديمية Mymath - منصة التعليم الذكية",
+  "short_name": "Mymath",
+  "description": "منصة تعليمية عربية متعددة المدرسين مع AI مخصص لجميع المواد والمراحل الدراسية",
   "theme_color": "#0891b2",
   "background_color": "#ffffff",
   "display": "standalone",
@@ -12,26 +12,42 @@
   "dir": "rtl",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/icons/icon-192.svg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/icons/icon-512.svg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "/icons/icon-512.png",
+      "src": "/icons/icon-512.svg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "form_factor": "narrow"
     }
   ],
   "categories": ["education", "productivity"],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "لوحة الطالب",
+      "short_name": "طالب",
+      "description": "الوصول السريع للوحة تحكم الطالب",
+      "url": "/?role=student",
+      "icons": [{ "src": "/icons/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "لوحة المدرس",
+      "short_name": "مدرس",
+      "description": "الوصول السريع للوحة تحكم المدرس",
+      "url": "/?role=teacher",
+      "icons": [{ "src": "/icons/icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
 }

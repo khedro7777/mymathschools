@@ -21,7 +21,8 @@ import {
   Sparkles,
   Baby,
   ShoppingBag,
-  GraduationCap
+  GraduationCap,
+  UserCheck
 } from 'lucide-react';
 import StudentDashboard from './StudentDashboard';
 import TeacherDashboard from './TeacherDashboard';
@@ -30,12 +31,65 @@ import InstallAppButton from '../components/InstallAppButton';
 import AIAssistant from '../components/AIAssistant';
 import AdvancedSearchEngine from '../components/AdvancedSearchEngine';
 import TeacherRegistration from '../components/TeacherRegistration';
-import { ModeToggle } from '../components/ui/mode-toggle'; // Import ModeToggle
+import LoginDialog from '../components/auth/LoginDialog';
+import RegisterDialog from '../components/auth/RegisterDialog';
+import { AuthProvider, useAuth } from '../components/auth/AuthContext';
+import { ModeToggle } from '../components/ui/mode-toggle';
 
-type UserType = 'guest' | 'student' | 'teacher' | 'admin';
+type UserType = 'guest' | 'student' | 'teacher' | 'admin' | 'teacher-assistant';
 
-const Index = () => {
+const IndexContent = () => {
   const [currentView, setCurrentView] = useState<UserType>('guest');
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [showRegisterDialog, setShowRegisterDialog] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+
+  // تحديد لوحة التحكم بناءً على دور المستخدم
+  const getUserDashboard = () => {
+    if (!user || !user.role) return null;
+    
+    switch (user.role.type) {
+      case 'student':
+        return <StudentDashboard />;
+      case 'teacher':
+        return <TeacherDashboard />;
+      case 'admin':
+        return <AdminDashboard />;
+      case 'teacher-assistant':
+        return <AdminDashboard />; // مساعد المدرس يستخدم لوحة الإدارة
+      default:
+        return null;
+    }
+  };
+
+  // إذا كان المستخدم مسجل دخول، عرض لوحة التحكم المناسبة
+  if (isAuthenticated && user) {
+    const dashboard = getUserDashboard();
+    if (dashboard) return dashboard;
+  }
+
+  // عرض لوحات التحكم التجريبية
+  if (currentView === 'student') {
+    return <StudentDashboard />;
+  }
+
+  if (currentView === 'teacher') {
+    return <TeacherDashboard />;
+  }
+
+  if (currentView === 'admin') {
+    return <AdminDashboard />;
+  }
+
+  const handleLoginSuccess = (userData: any) => {
+    setShowLoginDialog(false);
+    // سيتم إعادة التوجيه تلقائياً بناءً على الدور
+  };
+
+  const handleRegisterSuccess = (userData: any) => {
+    setShowRegisterDialog(false);
+    // سيتم إعادة التوجيه تلقائياً بناءً على الدور
+  };
 
   // Demo data for the landing page
   const stats = [
@@ -103,15 +157,37 @@ const Index = () => {
           </div>
           
           <div className="flex items-center gap-2 sm:gap-3">
-            <ModeToggle /> {/* Add ModeToggle here */}
+            <ModeToggle />
             <InstallAppButton />
-            <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-              تسجيل الدخول
-            </Button>
-            <Button variant="educational" size="sm">
-              <UserPlus className="h-4 w-4 ml-2" />
-              انضم الآن
-            </Button>
+            {isAuthenticated ? (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground hidden sm:inline">
+                  مرحباً، {user?.username}
+                </span>
+                <Button variant="outline" size="sm" onClick={logout}>
+                  تسجيل الخروج
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="hidden sm:inline-flex"
+                  onClick={() => setShowLoginDialog(true)}
+                >
+                  تسجيل الدخول
+                </Button>
+                <Button 
+                  variant="educational" 
+                  size="sm"
+                  onClick={() => setShowRegisterDialog(true)}
+                >
+                  <UserPlus className="h-4 w-4 ml-2" />
+                  انضم الآن
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -323,7 +399,29 @@ const Index = () => {
 
       {/* AI Assistant */}
       <AIAssistant position="fixed" context="main" />
+
+      {/* Login Dialog */}
+      <LoginDialog
+        isOpen={showLoginDialog}
+        onClose={() => setShowLoginDialog(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
+
+      {/* Register Dialog */}
+      <RegisterDialog
+        isOpen={showRegisterDialog}
+        onClose={() => setShowRegisterDialog(false)}
+        onRegisterSuccess={handleRegisterSuccess}
+      />
     </div>
+  );
+};
+
+const Index = () => {
+  return (
+    <AuthProvider>
+      <IndexContent />
+    </AuthProvider>
   );
 };
 

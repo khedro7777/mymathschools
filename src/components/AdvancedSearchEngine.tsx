@@ -4,7 +4,10 @@ import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Badge } from './ui/badge';
-import { Search, Star, User } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Search, Star, User, MapPin, Clock, Users, Heart } from 'lucide-react';
+import TeacherProfile from './TeacherProfile';
+import strapiService from '../services/strapiService';
 
 const EDUCATION_STAGES = [
   'رياض الأطفال',
@@ -60,97 +63,8 @@ const CERTIFICATES = [
   'Abitur'
 ];
 
-// Dummy teachers data
-const DUMMY_TEACHERS = [
-  {
-    id: 1,
-    name: 'أ. محمد عبد الله',
-    subject: 'كيمياء',
-    grade: 'الثالث الثانوي',
-    education: 'IGCSE',
-    rating: 4.8,
-    image: '/placeholder.svg',
-    experience: '10 سنوات خبرة',
-    students: 156
-  },
-  {
-    id: 2,
-    name: 'د. نهى أحمد',
-    subject: 'رياضيات',
-    grade: 'الثاني الثانوي',
-    education: 'التعليم المصري - لغات',
-    rating: 4.9,
-    image: '/placeholder.svg',
-    experience: '8 سنوات خبرة',
-    students: 203
-  },
-  {
-    id: 3,
-    name: 'أ. سارة محمود',
-    subject: 'فيزياء',
-    grade: 'الأول الثانوي',
-    education: 'American Diploma',
-    rating: 4.7,
-    image: '/placeholder.svg',
-    experience: '12 سنة خبرة',
-    students: 89
-  },
-  {
-    id: 4,
-    name: 'د. أحمد حسن',
-    subject: 'لغة إنجليزية',
-    grade: 'الثالث الإعدادي',
-    education: 'IGCSE',
-    rating: 4.6,
-    image: '/placeholder.svg',
-    experience: '15 سنة خبرة',
-    students: 267
-  },
-  {
-    id: 5,
-    name: 'أ. فاطمة علي',
-    subject: 'لغة عربية',
-    grade: 'الثاني الثانوي',
-    education: 'التعليم المصري - عربي',
-    rating: 4.9,
-    image: '/placeholder.svg',
-    experience: '12 سنة خبرة',
-    students: 189
-  },
-  {
-    id: 6,
-    name: 'د. عمر خالد',
-    subject: 'أحياء',
-    grade: 'الثالث الثانوي',
-    education: 'IGCSE',
-    rating: 4.7,
-    image: '/placeholder.svg',
-    experience: '9 سنوات خبرة',
-    students: 134
-  },
-  {
-    id: 7,
-    name: 'أ. مريم سالم',
-    subject: 'تاريخ',
-    grade: 'الأول الثانوي',
-    education: 'التعليم المصري - لغات',
-    rating: 4.5,
-    image: '/placeholder.svg',
-    experience: '7 سنوات خبرة',
-    students: 98
-  },
-  {
-    id: 8,
-    name: 'د. يوسف إبراهيم',
-    subject: 'جغرافيا',
-    grade: 'الثاني الإعدادي',
-    education: 'التعليم المصري - عربي',
-    rating: 4.6,
-    image: '/placeholder.svg',
-    experience: '11 سنة خبرة',
-    students: 145
-  }
-];
+// Dummy teachers data - سيتم استبدالها ببيانات حقيقية من Strapi
+const DUMMY_TEACHERS: any[] = [];
 
 interface SearchFilters {
   stage: string;
@@ -170,22 +84,47 @@ const AdvancedSearchEngine = () => {
     certificate: '',
     teacherName: ''
   });
-  const [searchResults, setSearchResults] = useState<typeof DUMMY_TEACHERS>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState<any>(null);
+  const [showProfile, setShowProfile] = useState(false);
 
-  const handleSearch = () => {
-    // Simulate search with dummy data
-    const filteredResults = DUMMY_TEACHERS.filter(teacher => {
-      return (
-        (!filters.subject || teacher.subject.includes(filters.subject)) &&
-        (!filters.grade || teacher.grade.includes(filters.grade)) &&
-        (!filters.educationType || teacher.education.includes(filters.educationType)) &&
-        (!filters.teacherName || teacher.name.includes(filters.teacherName))
-      );
-    });
+  const handleSearch = async () => {
+    setLoading(true);
+    try {
+      // البحث في Strapi عن المدرسين
+      // const teachers = await strapiService.getTeachers(filters);
+      // setSearchResults(teachers);
+      
+      // مؤقتاً: عرض رسالة عدم وجود نتائج
+      setSearchResults([]);
+      setShowResults(true);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+      setShowResults(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTeacherClick = (teacher: any) => {
+    // تحويل بيانات المدرس إلى تنسيق TeacherProfile
+    const teacherProfile = {
+      ...teacher,
+      bio: teacher.bio || 'مدرس متخصص ومتميز في مجاله',
+      specializations: teacher.specializations || [teacher.subject],
+      availability: teacher.availability || ['السبت 2:00 م', 'الأحد 4:00 م', 'الثلاثاء 6:00 م'],
+      hourlyRate: teacher.hourlyRate || 150,
+      languages: teacher.languages || ['العربية', 'الإنجليزية'],
+      achievements: teacher.achievements || ['شهادة التميز في التدريس', 'خبرة أكثر من 10 سنوات'],
+      location: teacher.location || 'القاهرة، مصر',
+      reviewsCount: teacher.reviewsCount || 50
+    };
     
-    setSearchResults(filteredResults);
-    setShowResults(true);
+    setSelectedTeacher(teacherProfile);
+    setShowProfile(true);
   };
 
   const renderStars = (rating: number) => {
@@ -366,7 +305,7 @@ const AdvancedSearchEngine = () => {
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => window.location.href = `/teacher-profile/${teacher.id}`}
+                  onClick={() => handleTeacherClick(teacher)}
                 >
                   عرض الملف الشخصي
                 </Button>
@@ -375,6 +314,34 @@ const AdvancedSearchEngine = () => {
           </div>
         </div>
       )}
+
+      {/* نافذة عرض بروفايل المدرس */}
+      <Dialog open={showProfile} onOpenChange={setShowProfile}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="p-6 pb-0">
+            <DialogTitle>ملف المدرس الشخصي</DialogTitle>
+          </DialogHeader>
+          <div className="p-6">
+            {selectedTeacher && (
+              <TeacherProfile
+                teacher={selectedTeacher}
+                onFollow={(teacherId) => {
+                  console.log('Follow teacher:', teacherId);
+                  // إضافة منطق المتابعة هنا
+                }}
+                onMessage={(teacherId) => {
+                  console.log('Message teacher:', teacherId);
+                  // إضافة منطق المراسلة هنا
+                }}
+                onBookSession={(teacherId) => {
+                  console.log('Book session with teacher:', teacherId);
+                  // إضافة منطق حجز الحصة هنا
+                }}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

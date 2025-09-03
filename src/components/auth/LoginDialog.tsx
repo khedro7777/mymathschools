@@ -177,8 +177,8 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
               type="button"
               className="text-sm text-blue-600 hover:underline"
               onClick={() => {
+                onClose();
                 // يمكن إضافة منطق فتح نموذج التسجيل هنا
-                console.log('Open register dialog');
               }}
             >
               انضم الآن
