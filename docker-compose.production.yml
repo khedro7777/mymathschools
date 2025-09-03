@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: mymath_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mymath_db
+      POSTGRES_USER: mymath_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mymath_network
+    ports:
+      - "5432:5432"
+
+  # Strapi Backend
+  strapi:
+    build:
+      context: ./strapi-app
+      dockerfile: Dockerfile
+    container_name: mymath_strapi
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: mymath_db
+      DATABASE_USERNAME: mymath_user
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+    volumes:
+      - strapi_uploads:/app/public/uploads
+    networks:
+      - mymath_network
+    depends_on:
+      - postgres
+    ports:
+      - "1337:1337"
+
+  # Frontend (React)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: mymath_frontend
+    restart: unless-stopped
+    environment:
+      REACT_APP_STRAPI_URL: https://api.mymath.live
+      REACT_APP_STRAPI_TOKEN: ${STRAPI_API_TOKEN}
+    networks:
+      - mymath_network
+
+  # N8N Workflow Automation
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: mymath_n8n
+    restart: unless-stopped
+    environment:
+      N8N_BASIC_AUTH_ACTIVE: true
+      N8N_BASIC_AUTH_USER: ${N8N_USER}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_PASSWORD}
+      N8N_HOST: n8n.mymath.live
+      N8N_PORT: 5678
+      N8N_PROTOCOL: https
+      WEBHOOK_URL: https://n8n.mymath.live/
+      GENERIC_TIMEZONE: Africa/Cairo
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - mymath_network
+    ports:
+      - "5678:5678"
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: mymath_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    networks:
+      - mymath_network
+    depends_on:
+      - frontend
+      - strapi
+      - n8n
+
+  # Certbot for SSL certificates
+  certbot:
+    image: certbot/certbot
+    container_name: mymath_certbot
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    command: certonly --webroot --webroot-path=/var/www/certbot --email newkhedro2@gmail.com --agree-tos --no-eff-email -d mymath.live -d www.mymath.live -d api.mymath.live -d n8n.mymath.live
+
+volumes:
+  postgres_data:
+  strapi_uploads:
+  n8n_data:
+  certbot_www:
+  certbot_conf:
+
+networks:
+  mymath_network:
+    driver: bridge
+
