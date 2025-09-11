@@ -275,7 +275,19 @@ const IndexContent = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
             {/* Student Demo */}
             <Card className="card-educational p-6 sm:p-8 text-center hover:scale-105 transition-transform cursor-pointer"
-                  onClick={() => setCurrentView('student')}>
+                  onClick={() => setShowRegisterDialog(true)}>
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary to-educational rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <GraduationCap className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+              </div>
+              <h4 className="text-xl sm:text-2xl font-bold text-primary mb-4">لوحة الطالب</h4>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">
+                ادرس، تفاعل مع المساعد الذكي، واشتري الأدوات
+              </p>
+              <Button variant="educational" className="w-full">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                ابدأ التعلم الآن
+              </Button>
+            </Card>
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary to-educational rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                 <GraduationCap className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
               </div>
@@ -313,7 +325,7 @@ const IndexContent = () => {
                 <Button 
                   variant="outline" 
                   className="w-full" 
-                  onClick={() => setCurrentView('teacher')}
+                  onClick={() => setShowRegisterDialog(true)}
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   جرب لوحة المدرس
@@ -323,7 +335,7 @@ const IndexContent = () => {
 
             {/* Admin Demo */}
             <Card className="card-educational p-6 sm:p-8 text-center hover:scale-105 transition-transform cursor-pointer"
-                  onClick={() => setCurrentView('admin')}>
+                  onClick={() => setShowRegisterDialog(true)}>
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary to-destructive rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                 <Shield className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
               </div>
