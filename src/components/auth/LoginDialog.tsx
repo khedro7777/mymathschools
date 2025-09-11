@@ -62,6 +62,17 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
         password: password
       });
 
+      // Check if user is approved
+      if (response.user.status === 'pending') {
+        setError('حسابك في انتظار موافقة الإدارة. سيتم إشعارك عند الموافقة على حسابك.');
+        return;
+      }
+
+      if (response.user.status === 'rejected') {
+        setError('تم رفض حسابك من قبل الإدارة. يرجى التواصل مع الدعم الفني.');
+        return;
+      }
+
       onLoginSuccess(response.user);
       onClose();
     } catch (err: any) {

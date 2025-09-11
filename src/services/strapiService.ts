@@ -1,6 +1,6 @@
 // خدمة Strapi API
-const STRAPI_URL = process.env.REACT_APP_STRAPI_URL || 'http://localhost:1337';
-const API_TOKEN = process.env.REACT_APP_STRAPI_TOKEN || '';
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
+const API_TOKEN = import.meta.env.VITE_STRAPI_TOKEN || '';
 
 interface StrapiResponse<T> {
   data: T;

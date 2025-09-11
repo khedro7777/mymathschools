@@ -73,6 +73,12 @@
       "relation": "oneToMany",
       "target": "api::payment.payment",
       "mappedBy": "student"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["pending", "approved", "rejected"],
+      "default": "pending",
+      "required": true
     }
   }
 }

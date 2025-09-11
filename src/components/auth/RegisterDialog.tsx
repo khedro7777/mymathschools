@@ -77,7 +77,13 @@ const RegisterDialog: React.FC<RegisterDialogProps> = ({ isOpen, onClose, onRegi
         role: selectedRole
       });
 
-      onRegisterSuccess(response.user);
+      // Check if user needs approval
+      if (response.user.status === 'pending') {
+        alert('تم إنشاء حسابك بنجاح! حسابك في انتظار موافقة الإدارة. سيتم إشعارك عند الموافقة على حسابك.');
+      } else {
+        onRegisterSuccess(response.user);
+      }
+      
       onClose();
     } catch (err: any) {
       setError(err.message || 'حدث خطأ في التسجيل');
