@@ -288,18 +288,6 @@ const IndexContent = () => {
                 ابدأ التعلم الآن
               </Button>
             </Card>
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary to-educational rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <GraduationCap className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-              </div>
-              <h4 className="text-xl sm:text-2xl font-bold text-primary mb-4">لوحة الطالب</h4>
-              <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">
-                ادرس، تفاعل مع المساعد الذكي، واشتري الأدوات
-              </p>
-              <Button variant="educational" className="w-full">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                ابدأ التعلم الآن
-              </Button>
-            </Card>
 
             {/* Teacher Demo */}
             <Card className="card-educational p-6 sm:p-8 text-center hover:scale-105 transition-transform">
@@ -368,7 +356,7 @@ const IndexContent = () => {
               size="xl" 
               variant="outline" 
               className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              onClick={() => setCurrentView('student')}
+              onClick={() => setShowRegisterDialog(true)}
             >
               <GraduationCap className="h-5 w-5 ml-2" />
               ابدأ كطالب

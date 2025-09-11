@@ -16,6 +16,10 @@ interface User {
     name: string;
     type: string;
   };
+  isTeacher?: boolean;
+  isStudent?: boolean;
+  isAdmin?: boolean;
+  isAssistantTeacher?: boolean;
 }
 
 interface LoginCredentials {
@@ -28,6 +32,46 @@ interface RegisterData {
   email: string;
   password: string;
   role?: string;
+}
+
+interface Course {
+  id: number;
+  title: string;
+  description?: string;
+  teacher?: User;
+  lessons?: Lesson[];
+  enrollments?: Enrollment[];
+}
+
+interface Level {
+  id: number;
+  title: string;
+  description?: string;
+  order: number;
+  lessons?: Lesson[];
+}
+
+interface Lesson {
+  id: number;
+  title: string;
+  content?: string;
+  video_url?: string;
+  level?: Level;
+  course?: Course;
+}
+
+interface Enrollment {
+  id: number;
+  student?: User;
+  course?: Course;
+  status: 'pending' | 'approved' | 'rejected';
+}
+
+interface Payment {
+  id: number;
+  student?: User;
+  amount: number;
+  status: 'pending' | 'completed' | 'failed';
 }
 
 class StrapiService {
@@ -135,60 +179,73 @@ class StrapiService {
   }
 
   // الحصول على الكورسات
-  async getCourses(): Promise<StrapiResponse<any[]>> {
-    return this.request<StrapiResponse<any[]>>('/courses?populate=*');
+  async getCourses(): Promise<StrapiResponse<Course[]>> {
+    return this.request<StrapiResponse<Course[]>>('/courses?populate=*');
   }
 
   // إنشاء كورس جديد
-  async createCourse(courseData: any): Promise<StrapiResponse<any>> {
-    return this.request<StrapiResponse<any>>('/courses', {
+  async createCourse(courseData: Partial<Course>): Promise<StrapiResponse<Course>> {
+    return this.request<StrapiResponse<Course>>('/courses', {
       method: 'POST',
       body: JSON.stringify({ data: courseData }),
     });
   }
 
+  // الحصول على المستويات
+  async getLevels(): Promise<StrapiResponse<Level[]>> {
+    return this.request<StrapiResponse<Level[]>>('/levels?populate=*');
+  }
+
+  // إنشاء مستوى جديد
+  async createLevel(levelData: Partial<Level>): Promise<StrapiResponse<Level>> {
+    return this.request<StrapiResponse<Level>>('/levels', {
+      method: 'POST',
+      body: JSON.stringify({ data: levelData }),
+    });
+  }
+
+  // الحصول على الدروس
+  async getLessons(): Promise<StrapiResponse<Lesson[]>> {
+    return this.request<StrapiResponse<Lesson[]>>('/lessons?populate=*');
+  }
+
+  // إنشاء درس جديد
+  async createLesson(lessonData: Partial<Lesson>): Promise<StrapiResponse<Lesson>> {
+    return this.request<StrapiResponse<Lesson>>('/lessons', {
+      method: 'POST',
+      body: JSON.stringify({ data: lessonData }),
+    });
+  }
+
   // الحصول على التسجيلات
-  async getEnrollments(): Promise<StrapiResponse<any[]>> {
-    return this.request<StrapiResponse<any[]>>('/enrollments?populate=*');
+  async getEnrollments(): Promise<StrapiResponse<Enrollment[]>> {
+    return this.request<StrapiResponse<Enrollment[]>>('/enrollments?populate=*');
   }
 
   // إنشاء تسجيل جديد
-  async createEnrollment(enrollmentData: any): Promise<StrapiResponse<any>> {
-    return this.request<StrapiResponse<any>>('/enrollments', {
+  async createEnrollment(enrollmentData: Partial<Enrollment>): Promise<StrapiResponse<Enrollment>> {
+    return this.request<StrapiResponse<Enrollment>>('/enrollments', {
       method: 'POST',
       body: JSON.stringify({ data: enrollmentData }),
     });
   }
 
   // الحصول على المدفوعات
-  async getPayments(): Promise<StrapiResponse<any[]>> {
-    return this.request<StrapiResponse<any[]>>('/payments?populate=*');
+  async getPayments(): Promise<StrapiResponse<Payment[]>> {
+    return this.request<StrapiResponse<Payment[]>>('/payments?populate=*');
   }
 
   // إنشاء دفعة جديدة
-  async createPayment(paymentData: any): Promise<StrapiResponse<any>> {
-    return this.request<StrapiResponse<any>>('/payments', {
+  async createPayment(paymentData: Partial<Payment>): Promise<StrapiResponse<Payment>> {
+    return this.request<StrapiResponse<Payment>>('/payments', {
       method: 'POST',
       body: JSON.stringify({ data: paymentData }),
     });
   }
 
-  // الحصول على المواد التعليمية
-  async getMaterials(): Promise<StrapiResponse<any[]>> {
-    return this.request<StrapiResponse<any[]>>('/materials?populate=*');
-  }
-
-  // إنشاء مادة تعليمية جديدة
-  async createMaterial(materialData: any): Promise<StrapiResponse<any>> {
-    return this.request<StrapiResponse<any>>('/materials', {
-      method: 'POST',
-      body: JSON.stringify({ data: materialData }),
-    });
-  }
-
   // الحصول على الأدوار
   async getRoles(): Promise<StrapiResponse<any[]>> {
-    return this.request<StrapiResponse<any[]>>('/roles');
+    return this.request<StrapiResponse<any[]>>('/users-permissions/roles');
   }
 
   // فحص حالة الاتصال
@@ -205,5 +262,5 @@ class StrapiService {
 }
 
 export default new StrapiService();
-export type { User, LoginCredentials, RegisterData };
+export type { User, LoginCredentials, RegisterData, Course, Level, Lesson, Enrollment, Payment };
 
